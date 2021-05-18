@@ -3,8 +3,12 @@ package Calculator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
-public class Calculator implements ActionListener {
+public class Calculator extends Thread implements ActionListener, Runnable {
 
 	JFrame frame;
 	JTextField textfield;
@@ -100,6 +104,24 @@ public class Calculator implements ActionListener {
 		frame.setVisible(true);
 	}
 	
+	public static synchronized void playSound(String soundName) {
+		
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					AudioInputStream ais = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+					Clip clip = AudioSystem.getClip();
+					clip.open(ais);
+					clip.start();
+		
+				} catch(Exception e) {
+					System.out.println("Error with playing sound");
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -107,38 +129,78 @@ public class Calculator implements ActionListener {
 		for(int i=0; i<10; i++) {
 			if(e.getSource() == numberButtons[i]) {
 				textfield.setText(textfield.getText().concat(String.valueOf(i)));
+				
+				switch(i) {
+				
+					case 0:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/0.wav");
+						break;
+					case 1:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/1.wav");
+						break;
+					case 2:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/2.wav");
+						break;
+					case 3:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/3.wav");
+						break;
+					case 4:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/4.wav");
+						break;
+					case 5:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/5.wav");
+						break;
+					case 6:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/6.wav");
+						break;
+					case 7:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/7.wav");
+						break;
+					case 8:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/8.wav");
+						break;
+					case 9:
+						playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/9.wav");
+						break;	
+				}
 			}
 		}
 		
 		if(e.getSource() == decButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/button.wav");
 			textfield.setText(textfield.getText().concat("."));
 		}
 		
 		if(e.getSource() == addButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/button.wav");
 			num1 = Double.parseDouble(textfield.getText());
 			operator = '+';
 			textfield.setText("");
 		}
 		
 		if(e.getSource() == subButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/button.wav");
 			num1 = Double.parseDouble(textfield.getText());
 			operator = '-';
 			textfield.setText("");
 		}
 		
 		if(e.getSource() == mulButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/button.wav");
 			num1 = Double.parseDouble(textfield.getText());
 			operator = '*';
 			textfield.setText("");
 		}
 		
 		if(e.getSource() == divButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/button.wav");
 			num1 = Double.parseDouble(textfield.getText());
 			operator = '/';
 			textfield.setText("");
 		}
 		
 		if(e.getSource() == equButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/button.wav");
 			num2 = Double.parseDouble(textfield.getText());
 			
 			switch(operator) {
@@ -165,11 +227,13 @@ public class Calculator implements ActionListener {
 		}
 	
 		if(e.getSource() == clrButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/clear.wav");
 			textfield.setText("");
 		}
 		
 
 		if(e.getSource() == delButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/delete.wav");
 			String str = textfield.getText();
 			textfield.setText("");
 			for(int i=0; i<str.length()-1; i++) {
@@ -178,6 +242,7 @@ public class Calculator implements ActionListener {
 		}
 			
 		if(e.getSource() == negButton) {
+			playSound("/home/ubuntu/Core2Web/Java/Calculator Project/Calculator/audio-numbers/button.wav");
 			double temp = Double.parseDouble(textfield.getText());
 			temp *= -1;
 			textfield.setText(String.valueOf(temp));
